@@ -1,4 +1,5 @@
-﻿using SFT.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SFT.Data;
 using SFT.Models;
 using System.Linq;
 using System.Security.Cryptography;
@@ -9,7 +10,13 @@ namespace SFT.Services
 {
     public class UserService
     {
-        private readonly AppDbContext _context = new AppDbContext();
+        private AppDbContext _context;
+
+        public UserService(AppDbContext context)
+        {
+            _context = context;
+        }
+
 
         public bool RegisterUser(string email, string password)
         {

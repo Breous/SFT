@@ -1,0 +1,8 @@
+﻿@page
+@model SFT.Pages.ProfileModel
+@using System.Security.Claims
+
+<h2>User Profile</h2>
+<p>Name: @User.Identity.Name</p>
+<p>Email: @(User.FindFirstValue(ClaimTypes.Email))</p>
+<p>Sustainability Level: @Model.CurrentUser.SustainabilityLevel</p>

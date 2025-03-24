@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 namespace SFT.Models
@@ -7,6 +7,9 @@ namespace SFT.Models
     {
         public int PurchaseID { get; set; }
         public int UserID { get; set; }
+        public string UserId { get; internal set; }
+        public required User User { get; set; }
+
         public required string Brand { get; set; }
         public required string ItemName { get; set; }
         public required string Material { get; set; }

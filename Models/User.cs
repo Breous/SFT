@@ -1,16 +1,11 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace SFT.Models;
-public class User
+namespace SFT.Models
 {
-    [Key]
-    public int UserID { get; set; }
-
-    [Required, EmailAddress]
-    public required string Email { get; set; }
-
-    [Required]
-    public required string PasswordHash { get; set; } // Secure hashed password
+    public class User : IdentityUser
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string SustainabilityLevel { get; set; }
+    }
 }
-
