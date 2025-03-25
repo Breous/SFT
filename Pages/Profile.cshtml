@@ -2,7 +2,68 @@
 @model SFT.Pages.ProfileModel
 @using System.Security.Claims
 
-<h2>User Profile</h2>
-<p>Name: @User.Identity.Name</p>
-<p>Email: @(User.FindFirstValue(ClaimTypes.Email))</p>
-<p>Sustainability Level: @Model.CurrentUser.SustainabilityLevel</p>
+<h2 class="mb-4">User Profile</h2>
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="alert alert-info">
+    You’ve logged <strong>@Model.TotalPurchases</strong> purchase(s) totaling <strong>@Model.TotalSpent.ToString("C")</strong>.
+    Your average rating is <strong>@Model.AverageRating.ToString("0.0")</strong>.
+</div>
+
+
+<p><strong>Name:</strong>  @User.Identity.Name</p>
+<p><strong>Email:</strong> @(User.FindFirstValue(ClaimTypes.Email))</p>
+<p><strong>Sustainability Level:</strong> @Model.CurrentUser.SustainabilityLevel</p>
+
+<hr />
+
+<h4 class="mt-4">Purchase Summary</h4>
+<ul class="list-unstyled">
+    <li><strong>Total Purchases:</strong> @Model.TotalPurchases</li>
+    <li><strong>Total Spent:</strong> @Model.TotalSpent.ToString("C")</li>
+    <li><strong>Average Rating:</strong> @Model.AverageRating.ToString("0.0")</li>
+</ul>
+<form method="post" asp-page-handler="Export">
+    <button type="submit" class="btn btn-outline-secondary">Download My Purchases</button>
+</form>
+<hr />
+
+<h4 class="mt-4">Purchase History</h4>
+
+<h3 class="mt-5">Purchase History</h3>
+<table class="table table-bordered table-striped mt-3">
+    <thead class="table-dark">
+        <tr>
+            <th>Brand</th>
+            <th>Item</th>
+            <th>Material</th>
+            <th>Price</th>
+            <th>Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var purchase in Model.Purchases)
+        {
+            <tr>
+                <td>@purchase.Brand</td>
+                <td>@purchase.ItemName</td>
+                <td>@purchase.Material</td>
+                <td>@purchase.Price.ToString("C")</td>
+                <td>@purchase.Rating</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -57,6 +57,10 @@ namespace SFT.Pages.Account
                 return RedirectToPage("/Profile");
             }
 
+            TempData["Error"] = "Invalid login attempt.";
+            // or
+            TempData["Success"] = "Account created! You can now log in.";
+
             foreach (var error in result.Errors)
                 ModelState.AddModelError(string.Empty, error.Description);
 

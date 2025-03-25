@@ -1,10 +1,22 @@
 ﻿@page
-@model IndexModel
+@model SFT.Pages.IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mt-5">
+    <h1 class="display-4">Sustainable Fashion Tracker</h1>
+    <p class="lead">Track your eco-conscious purchases and see your impact.</p>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a class="btn btn-success mt-3" asp-page="/LogPurchase">Log a Purchase</a>
+        <a class="btn btn-outline-primary mt-3" asp-page="/Profile">View Profile</a>
+    }
+    else
+    {
+        <a class="btn btn-primary mt-3" asp-page="/Account/Login">Login</a>
+        <a class="btn btn-outline-secondary mt-3" asp-page="/Account/Register">Register</a>
+    }
 </div>
+

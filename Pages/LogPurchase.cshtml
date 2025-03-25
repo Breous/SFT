@@ -4,32 +4,33 @@
     ViewData["Title"] = "Log Purchase";
 }
 
-<h2>Log a New Purchase</h2>
+<h2 class="mb-4">Log a New Purchase</h2>
 
 <form method="post">
-    <div class="form-group">
-        <label>Brand</label>
-        <input type="text" class="form-control" asp-for="Purchase.Brand" required />
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="Purchase.Brand" class="form-label"></label>
+            <input asp-for="Purchase.Brand" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <label asp-for="Purchase.ItemName" class="form-label"></label>
+            <input asp-for="Purchase.ItemName" class="form-control" />
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Item Name</label>
-        <input type="text" class="form-control" asp-for="Purchase.ItemName" required />
-    </div>
-
-    <div class="form-group">
-        <label>Material</label>
-        <input type="text" class="form-control" asp-for="Purchase.Material" required />
-    </div>
-
-    <div class="form-group">
-        <label>Price</label>
-        <input type="number" class="form-control" asp-for="Purchase.Price" step="0.01" required />
-    </div>
-
-    <div class="form-group">
-        <label>Sustainability Rating</label>
-        <input type="number" class="form-control" asp-for="Purchase.Rating" min="1" max="5" required />
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="Purchase.Material" class="form-label"></label>
+            <input asp-for="Purchase.Material" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="Purchase.Price" class="form-label"></label>
+            <input asp-for="Purchase.Price" class="form-control" type="number" step="0.01" />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="Purchase.Rating" class="form-label"></label>
+            <input asp-for="Purchase.Rating" class="form-control" type="number" min="1" max="5" />
+        </div>
     </div>
 
     <button type="submit" class="btn btn-success">Save Purchase</button>

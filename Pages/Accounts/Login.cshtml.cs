@@ -21,6 +21,7 @@ public class LoginModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+
         var result = await _signInManager.PasswordSignInAsync(Email, Password, false, false);
 
         if (result.Succeeded)
@@ -28,7 +29,13 @@ public class LoginModel : PageModel
             return RedirectToPage("/Profile");
         }
 
+        TempData["Error"] = "Invalid login attempt.";
+        // or
+        TempData["Success"] = "Account created! You can now log in.";
+
         ModelState.AddModelError("", "Invalid login attempt.");
         return Page();
     }
 }
+// This class handles only profile data for the logged-in user
+// Follows SRP (Single Responsibility Principle)

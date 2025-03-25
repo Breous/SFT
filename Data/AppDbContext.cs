@@ -14,3 +14,5 @@ namespace SFT.Data
         public DbSet<Purchase> Purchases { get; set; } 
     }
 }
+// AppDbContext and UserManager<User> are injected via constructor
+// Demonstrates the Dependency Inversion Principle

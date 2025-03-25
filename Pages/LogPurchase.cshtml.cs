@@ -31,12 +31,15 @@ namespace SFT.Pages
 
 
             if (!ModelState.IsValid || string.IsNullOrEmpty(userId))
+            {
+                TempData["Error"] = "There was a problem saving your purchase.";
                 return Page();
+            }
 
-            Purchase.UserId = userId;
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();
 
+            TempData["Success"] = "Your purchase was logged successfully!";
             return RedirectToPage("/Profile");
         }
     }
