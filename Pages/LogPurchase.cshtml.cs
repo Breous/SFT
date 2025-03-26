@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
 using SFT.Models;
@@ -29,13 +29,13 @@ namespace SFT.Pages
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-
             if (!ModelState.IsValid || string.IsNullOrEmpty(userId))
             {
                 TempData["Error"] = "There was a problem saving your purchase.";
                 return Page();
             }
 
+            Purchase.UserId = userId; // ✅ Required: link purchase to user
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();
 
