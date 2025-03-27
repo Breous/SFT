@@ -35,9 +35,20 @@
 
 <hr />
 
-<form method="post" asp-page-handler="Export">
-    <button type="submit" class="btn btn-outline-secondary mb-4">Download My Purchases</button>
-</form>
+<h4 class="mt-4">Export My Purchases</h4>
+<div class="mb-4">
+    <form method="post" asp-page-handler="ExportCsv" class="d-inline">
+        <button type="submit" class="btn btn-outline-primary">Download CSV</button>
+    </form>
+
+    <form method="post" asp-page-handler="ExportTxt" class="d-inline ms-2">
+        <button type="submit" class="btn btn-outline-secondary">Download TXT</button>
+    </form>
+
+    <form method="post" asp-page-handler="ExportJson" class="d-inline ms-2">
+        <button type="submit" class="btn btn-outline-success">Download JSON</button>
+    </form>
+</div>
 
 <h4 class="mt-4">Purchase Summary</h4>
 <ul class="list-unstyled">
@@ -79,4 +90,17 @@
 else
 {
     <p>No purchases found.</p>
+}
+
+@section Scripts {
+    <script>
+        const buttons = document.querySelectorAll("form[method='post'] button");
+        buttons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                setTimeout(() => {
+                    alert("Your download should begin shortly.");
+                }, 400);
+            });
+        });
+    </script>
 }
