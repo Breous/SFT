@@ -27,6 +27,6 @@ namespace SFT.Models
         public required string UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public required User User { get; set; }
+        public required User? User { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SFT.Data;
@@ -19,6 +19,13 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+// ✅ NEW: Ensure database and tables are created
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.EnsureCreated(); // This will create the .db file and tables if missing
+}
+
 // Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
@@ -36,3 +43,4 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+
