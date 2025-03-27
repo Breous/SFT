@@ -20,3 +20,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+body {
+    background-color: #f0ede4; /* Matches the tree image background */
+    color: #222;
+}
