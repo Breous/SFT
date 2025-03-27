@@ -27,7 +27,6 @@ namespace SFT.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             if (string.IsNullOrEmpty(userId))
             {
                 TempData["Error"] = "You must be logged in.";
@@ -46,29 +45,44 @@ namespace SFT.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostExportAsync()
+        public async Task<IActionResult> OnPostExportCsvAsync()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return RedirectToPage("/Account/Login");
 
-            if (string.IsNullOrEmpty(userId))
-                return RedirectToPage("/Account/Login");
+            var purchases = await _context.Purchases.Where(p => p.UserId == userId).ToListAsync();
 
-            var purchases = await _context.Purchases
-                .Where(p => p.UserId == userId)
-                .ToListAsync();
-
-            var csvLines = new List<string>
-            {
-                "Brand,Item,Material,Price,Rating"
-            };
-
-            foreach (var p in purchases)
-            {
-                csvLines.Add($"{p.Brand},{p.ItemName},{p.Material},{p.Price},{p.Rating}");
-            }
+            var csvLines = new List<string> { "Brand,Item,Material,Price,Rating" };
+            csvLines.AddRange(purchases.Select(p => $"{p.Brand},{p.ItemName},{p.Material},{p.Price},{p.Rating}"));
 
             var bytes = System.Text.Encoding.UTF8.GetBytes(string.Join("\n", csvLines));
             return File(bytes, "text/csv", "MyPurchases.csv");
+        }
+
+        public async Task<IActionResult> OnPostExportTxtAsync()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return RedirectToPage("/Account/Login");
+
+            var purchases = await _context.Purchases.Where(p => p.UserId == userId).ToListAsync();
+
+            var lines = purchases.Select(p =>
+                $"Brand: {p.Brand}, Item: {p.ItemName}, Material: {p.Material}, Price: ${p.Price}, Rating: {p.Rating}");
+
+            var bytes = System.Text.Encoding.UTF8.GetBytes(string.Join("\n", lines));
+            return File(bytes, "text/plain", "MyPurchases.txt");
+        }
+
+        public async Task<IActionResult> OnPostExportJsonAsync()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId)) return RedirectToPage("/Account/Login");
+
+            var purchases = await _context.Purchases.Where(p => p.UserId == userId).ToListAsync();
+
+            var json = System.Text.Json.JsonSerializer.Serialize(purchases);
+            var bytes = System.Text.Encoding.UTF8.GetBytes(json);
+            return File(bytes, "application/json", "MyPurchases.json");
         }
     }
 }
