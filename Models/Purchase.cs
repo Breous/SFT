@@ -5,16 +5,15 @@ namespace SFT.Models
 {
     public class Purchase
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
-        public required string Brand { get; set; }
+        public string? Brand { get; set; }
 
         [Required]
-        public required string ItemName { get; set; }
+        public string? ItemName { get; set; }
 
-        public required string Material { get; set; }
+        public string? Material { get; set; }
 
         [Range(0.01, 10000)]
         public decimal Price { get; set; }
@@ -22,11 +21,10 @@ namespace SFT.Models
         [Range(1, 5)]
         public int Rating { get; set; }
 
-        // Foreign Key to User
-        [Required]
-        public required string UserId { get; set; }
+        // ✅ Remove [Required] from here
+        public string? UserId { get; set; }
 
         [ForeignKey("UserId")]
-        public required User? User { get; set; }
+        public User? User { get; set; }
     }
 }

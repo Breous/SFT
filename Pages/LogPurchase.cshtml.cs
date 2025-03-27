@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using SFT.Models;
 using SFT.Data;
-using System.Security.Claims;
 
 namespace SFT.Pages
 {
@@ -18,7 +18,7 @@ namespace SFT.Pages
         }
 
         [BindProperty]
-        public required Purchase Purchase { get; set; }
+        public Purchase Purchase { get; set; } = new();
 
         public IActionResult OnGet()
         {
@@ -27,15 +27,34 @@ namespace SFT.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            // Get the logged-in user’s ID
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (!ModelState.IsValid || string.IsNullOrEmpty(userId))
+            // Set it BEFORE validation
+            Purchase.UserId = userId;
+
+            // Validate the full model
+            if (!ModelState.IsValid)
             {
-                TempData["Error"] = "There was a problem saving your purchase.";
+                // Optional: show debug messages in Output
+                foreach (var entry in ModelState)
+                {
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        Console.WriteLine($"Validation Error - {entry.Key}: {error.ErrorMessage}");
+                    }
+                }
+
+                TempData["Error"] = "Please correct the form errors.";
                 return Page();
             }
 
-            Purchase.UserId = userId; // ✅ Required: link purchase to user
+            if (string.IsNullOrEmpty(userId))
+            {
+                TempData["Error"] = "Could not identify the current user.";
+                return Page();
+            }
+
             _context.Purchases.Add(Purchase);
             await _context.SaveChangesAsync();
 
