@@ -56,7 +56,7 @@
 ### Run Locally
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/SFT.git
+git clone https://github.com/Breous/SFT.git
 cd SFT
 dotnet ef database update # apply migrations
 dotnet run
